@@ -1,0 +1,2 @@
+# plugin-collections
+Photo collections
