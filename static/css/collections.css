@@ -1,0 +1,10 @@
+.microblog_collection a {
+	display: inline-block;
+}
+
+.microblog_collection img {
+	width: 250px;
+	height: 250px;
+	object-fit: cover;
+	padding: 5px;
+}

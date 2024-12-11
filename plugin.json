@@ -1,0 +1,8 @@
+  {
+  "version": "1.0",
+  "title": "Photo collections",
+  "description": "Adds basic styling for photo collections.",
+  "includes": [
+    "/css/collections.css"
+  ]
+}
