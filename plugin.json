@@ -3,6 +3,7 @@
   "title": "Photo collections",
   "description": "Adds basic styling for photo collections.",
   "includes": [
-    "/css/collections.css"
+    "/css/collections.css",
+    "collections.html"
   ]
 }
