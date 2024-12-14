@@ -7,6 +7,7 @@
 }
 
 .microblog_collection img {
+	display: inline-block;
 	width: 200px;
 	height: 200px;
 	object-fit: cover;
