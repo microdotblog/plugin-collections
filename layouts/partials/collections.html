@@ -2,6 +2,7 @@
 	document.addEventListener('DOMContentLoaded', () => {
 		const images = document.querySelectorAll('.microblog_collection img');
 		let currentImageIndex = 0;
+		let isMultiLightbox = false;
 
 		function createLightbox() {
 			// dynamically add lightbox elements to the page
@@ -44,10 +45,25 @@
 			lightboxImg 
 		} = createLightbox();
 
-		function openLightbox(index) {
+		function openMultiLightbox(index) {
+			isMultiLightbox = true;
 			currentImageIndex = index;
 			lightboxImg.src = images[index].getAttribute('data-microblog-lightbox');
 			lightbox.style.display = 'flex';
+
+			// show buttons
+			prevBtn.style.display = 'block';
+			nextBtn.style.display = 'block';
+		}
+		
+		function openSingleLightbox(url) {
+			isMultiLightbox = false;
+			lightboxImg.src = url;
+			lightbox.style.display = 'flex';
+
+			// hide buttons
+			prevBtn.style.display = 'none';
+			nextBtn.style.display = 'none';
 		}
 
 		function closeLightbox() {
@@ -66,7 +82,7 @@
 
 		// open lightbox when clicking on image
 		images.forEach((img, index) => {
-			img.addEventListener('click', () => openLightbox(index));
+			img.addEventListener('click', () => openMultiLightbox(index));
 		});
 
 		closeBtn.addEventListener('click', closeLightbox);
@@ -78,10 +94,14 @@
 			if (lightbox.style.display === 'flex') {
 				switch (e.key) {
 					case 'ArrowLeft':
-						navigatePrevious();
+						if (isMultiLightbox) {
+							navigatePrevious();
+						}
 						break;
 					case 'ArrowRight':
-						navigateNext();
+						if (isMultiLightbox) {
+							navigateNext();
+						}
 						break;
 					case 'Escape':
 						closeLightbox();
@@ -94,6 +114,29 @@
 		lightbox.addEventListener('click', (e) => {
 			if (e.target === lightbox) {
 				closeLightbox();
+			}
+		});
+		
+		// now also check for simple images that aren't in a collection
+		const single_images = document.querySelectorAll(".e-content img");		
+		single_images.forEach(function(image) {
+			// exclude images microblog_collection
+			if (image.closest(".microblog_collection")) {
+				return;
+			}
+		
+			// check if the img element does not have an "a" tag as its parent
+			if (!image.closest("a")) {
+				// check for existing 'click' and 'touch' event handlers
+				const hasClickHandler = image.onclick || image.hasAttribute("onclick");
+				const hasTouchHandler = image.ontouchstart || image.hasAttribute("ontouchstart");
+		
+				// only add the click listener if no existing handlers are found
+				if (!hasClickHandler && !hasTouchHandler) {
+					image.addEventListener("click", function() {
+						openSingleLightbox(image.src);
+					});
+				}
 			}
 		});
 	});
