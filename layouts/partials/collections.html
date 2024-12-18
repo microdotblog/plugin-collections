@@ -118,7 +118,7 @@
 		});
 		
 		// now also check for simple images that aren't in a collection
-		const single_images = document.querySelectorAll(".e-content img");		
+		const single_images = document.querySelectorAll(".e-content img, .p-summary img");
 		single_images.forEach(function(image) {
 			// exclude images microblog_collection
 			if (image.closest(".microblog_collection")) {
