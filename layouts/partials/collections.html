@@ -4,6 +4,10 @@
 		let currentImageIndex = 0;
 		let isMultiLightbox = false;
 
+		function isDataURL(url) {
+			return (typeof url == 'string') && url.trim().startsWith('data:');
+		}
+
 		function createLightbox() {
 			// dynamically add lightbox elements to the page
 			const lightbox = document.createElement('div');
@@ -82,6 +86,9 @@
 
 		// open lightbox when clicking on image
 		images.forEach((img, index) => {
+			if (isDataURL(img.src)) {
+				return;
+			}
 			img.addEventListener('click', () => openMultiLightbox(index));
 		});
 
@@ -132,7 +139,7 @@
 				const hasTouchHandler = image.ontouchstart || image.hasAttribute("ontouchstart");
 		
 				// only add the click listener if no existing handlers are found
-				if (!hasClickHandler && !hasTouchHandler) {
+				if (!hasClickHandler && !hasTouchHandler && !isDataURL(image.src)) {
 					image.addEventListener("click", function() {
 						openSingleLightbox(image.src);
 					});
